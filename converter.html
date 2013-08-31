@@ -1,0 +1,66 @@
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+var amount = 100;
+var convert_from = "USD";
+var convert_to = "EUR";
+var base_url = "http://rate-exchange.appspot.com/currency";
+var request_url = base_url + "?q=" +  amount + "&from=" + convert_from + "&to=" + convert_to;
+
+jQuery(document).ready(function() {
+  var updateValue = function() {
+    convert_from = jQuery('#<?php echo NC_CURRENCY_CONVERTER_WIDGET_ID; ?>-from').val();
+    convert_to = jQuery('#<?php echo NC_CURRENCY_CONVERTER_WIDGET_ID; ?>-to').val();
+    amount = jQuery('#<?php echo NC_CURRENCY_CONVERTER_WIDGET_ID; ?>-amount').val();
+    request_url = base_url + "?q=" +  amount + "&from=" + convert_from + "&to=" + convert_to;
+
+    jQuery.ajax(request_url, {
+      'dataType' : 'jsonp',
+      'success' : function(data) {
+        jQuery('#<?php echo NC_CURRENCY_CONVERTER_WIDGET_ID; ?>-result').text("Total: " + data.v);
+      }
+    });
+  };
+  
+  jQuery('#<?php echo NC_CURRENCY_CONVERTER_WIDGET_ID; ?>-to').change(function() {
+    convert_to = jQuery('#<?php echo NC_CURRENCY_CONVERTER_WIDGET_ID; ?>-to').val();
+    updateValue();
+  });
+  
+  jQuery('#<?php echo NC_CURRENCY_CONVERTER_WIDGET_ID; ?>-from').change(function() {
+    convert_from = jQuery('#<?php echo NC_CURRENCY_CONVERTER_WIDGET_ID; ?>-from').val();
+    updateValue();
+  });
+
+  jQuery('#<?php echo NC_CURRENCY_CONVERTER_WIDGET_ID; ?>-amount').change(function() {
+    amount = jQuery('#<?php echo NC_CURRENCY_CONVERTER_WIDGET_ID; ?>-amount').val();
+    updateValue();
+  });
+
+  updateValue();
+});
+
+</script>
+<br>
+<label for="<?php echo NC_CURRENCY_CONVERTER_WIDGET_ID; ?>-amount">Amount</label>
+<input id="<?php echo NC_CURRENCY_CONVERTER_WIDGET_ID; ?>-amount" type="text" value="10">
+  <br>
+<label for="<?php echo NC_CURRENCY_CONVERTER_WIDGET_ID; ?>-from">From</label>
+<select id="<?php echo NC_CURRENCY_CONVERTER_WIDGET_ID; ?>-from">
+  <option value="USD" selected>USD</option>
+  <option value="EUR">EUR</option>
+  <option value="GBP">GBP</option>
+  <option value="INR">INR</option>
+  <option value="AUD">AUD</option>
+</select>
+  <br>
+<label for="<?php echo NC_CURRENCY_CONVERTER_WIDGET_ID; ?>-to">To</label>
+<select id="<?php echo NC_CURRENCY_CONVERTER_WIDGET_ID; ?>-to">
+  <option value="USD">USD</option>
+  <option value="EUR" selected>EUR</option>
+  <option value="GBP">GBP</option>
+  <option value="INR">INR</option>
+  <option value="AUD">AUD</option>
+</select>
+<div id="<?php echo NC_CURRENCY_CONVERTER_WIDGET_ID; ?>-result">Total: </div>
